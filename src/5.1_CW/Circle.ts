@@ -1,5 +1,4 @@
-
-export class Circle extends Shape {
+export class Circle extends Printable {
     public radius: number;
 
     constructor(color: string, name: string, radius: number) {
@@ -10,5 +9,4 @@ export class Circle extends Shape {
     public calculateArea(): number {
         return Math.PI * Math.pow(this.radius, 2);
     }
-
 }

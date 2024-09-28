@@ -1,4 +1,4 @@
-export class Rectangle extends Shape {
+export class Rectangle extends Shape implements Printable {
     public width: number;
     public height: number;
 

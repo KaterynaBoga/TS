@@ -1,13 +1,11 @@
 abstract class Shape {
-    public name: string;
-    public color: string;
+    public readonly name: string;
+    public readonly color: string;
 
-    constructor(color: string, name: string) {
+    protected constructor(color: string, name: string) {
         this.color = color;
         this.name = name;
     }
 
-    public calculateArea(): number {
-        return 0;
-    }
+    public abstract calculateArea(): number;
 }
