@@ -9,7 +9,8 @@
 //     [indetifier: symbol]: string;
 // }
 //
-// interface Indetifier {
+// interface Indetifier {                                                                                                                                           `
+
 //     [indetifier: number]: string;
 // }
 
