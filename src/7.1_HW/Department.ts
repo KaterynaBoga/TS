@@ -1,13 +1,24 @@
 import {Employee, Status} from "./Employee";
 import {PreHiredEmployee} from "./PreHiredEmployee";
 
+export enum DepartmentDomainEnum {
+    ACCOUNTING = 'Accounting',
+    HR = 'HR',
+    IT = 'IT',
+}
+
+const ZERO_BUDGET_VALUE = 0;
+
 export class Department {
     name: string;
-    domain: string;
+    domain: DepartmentDomainEnum;
     employees: Employee[];
-    budget: Budget;
+    budget: Budget = {
+        debit: ZERO_BUDGET_VALUE,
+        credit: ZERO_BUDGET_VALUE
+    };
 
-    constructor(name: string, domain: string, employees: Employee[], budget: Budget) {
+    constructor(name: string, domain: DepartmentDomainEnum, employees: Employee[], budget: Budget) {
         this.name = name;
         this.domain = domain;
         this.employees = employees;
@@ -18,20 +29,49 @@ export class Department {
         return this.budget.debit - this.budget.credit;
     }
 
-    addEmployee(employee: Employee) {
-        this.employees.push(employee);
-        this.budget.debit -= employee.salary;
+    addEmployee(newcomer: Employee | PreHiredEmployee): void {
+        if (newcomer instanceof Employee) {
+            this.employees.push(newcomer);
+            this.budget.debit -= newcomer.salary;
+        } else {
+            const employee = new Employee(newcomer.firstName, newcomer.lastName, newcomer.bankAccountNumber, newcomer.salary, Status.ACTIVE, this);
+            this.employees.push(employee);
+            this.budget.debit -= employee.salary;
+        }
+
     }
 
-    hirePreHiredEmployee(preHired: PreHiredEmployee): Employee {
-        const employee = new Employee(preHired.firstName, preHired.lastName, preHired.bankAccountNumber, preHired.salary, Status.ACTIVE, this);
-        this.addEmployee(employee);
-        return employee;
+    hirePreHiredOrRegularEmployee(employeeOrPreHired: Employee | PreHiredEmployee): Employee {
+        if (this.isPreHiredEmployee(employeeOrPreHired)) {
+            const employee = new Employee(
+                employeeOrPreHired.firstName,
+                employeeOrPreHired.lastName,
+                employeeOrPreHired.bankAccountNumber,
+                employeeOrPreHired.salary,
+                Status.ACTIVE,
+                this
+            );
+            this.addEmployee(employee);
+            return employee;
+        } else {
+            this.addEmployee(employeeOrPreHired);
+            return employeeOrPreHired;
+        }
     }
 
-    removeEmployee(employee: Employee) {
+    private isPreHiredEmployee(employee: Employee | PreHiredEmployee): employee is PreHiredEmployee {
+        return (employee as PreHiredEmployee).bankAccountNumber !== undefined;
+    }
+
+    removeEmployee(employee: Employee): void {
         this.employees = this.employees.filter(e => e !== employee);
         this.budget.credit += employee.salary;
     }
+
+    salaryPayment(): void {}
+
+    internalPayment(employee: Employee): void {}
+
+    externalPayment(preHire: PreHiredEmployee): void {}
 
 }

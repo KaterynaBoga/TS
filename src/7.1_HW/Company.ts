@@ -3,15 +3,17 @@ import {PreHiredEmployee} from "./PreHiredEmployee";
 import {Employee} from "./Employee";
 
 export class Company {
-    name: string;
+    name: string = 'Company';
     departments: Department[] = [];
-    preHiredStaff: PreHiredEmployee[];
-    allStaff: Employee[];
+    preHiredStaff: PreHiredEmployee[] = [];
 
-    constructor(name: string, departments: Department[], preHiredStaff: PreHiredEmployee[], allStaff: Employee[]) {
+    constructor(name: string, departments: Department[], preHiredStaff: PreHiredEmployee[]) {
         this.name = name;
         this.departments = departments;
         this.preHiredStaff = preHiredStaff;
-        this.allStaff = allStaff;
+    }
+
+    get allStaff(): (Employee | PreHiredEmployee)[] {
+        return [...this.departments.flatMap(d => d.employees), ...this.preHiredStaff];
     }
 }
