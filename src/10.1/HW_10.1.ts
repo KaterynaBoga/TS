@@ -21,3 +21,5 @@ type PropertyDescriptor<T> = {
 type ObjectToPropertyDescriptor<T> = {
     [K in keyof T]: PropertyDescriptor<T[K]>;
 };
+
+
