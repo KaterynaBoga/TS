@@ -1,6 +1,6 @@
-import {Note} from "./Note";
+import { Note, NoteStatus } from "./Note";
 
-class TodoList {
+export class TodoList {
     private notes: Note[] = [];
 
     public addNote(note: Note) {
@@ -17,7 +17,7 @@ class TodoList {
     }
 
     public editNote(id: number, newContent: string): boolean {
-        const note = this.notes.find(note => note.id === id);
+        const note = this.getNoteById(id);
         if (note) {
             note.updateContent(newContent);
             return true;
@@ -34,7 +34,7 @@ class TodoList {
     }
 
     public markNoteAsCompleted(id: number): boolean {
-        const note = this.notes.find(note => note.id === id);
+        const note = this.getNoteById(id);
         if (note) {
             note.markAsCompleted();
             return true;
@@ -47,20 +47,6 @@ class TodoList {
     }
 
     public getPendingNotesCount(): number {
-        return this.notes.filter(note => note.status === 'active').length;
-    }
-
-    public searchNotes(keyword: string): Note[] {
-        return this.notes.filter(note =>
-            note.title.includes(keyword) || note.content.includes(keyword)
-        );
-    }
-
-    public sortNotes(by: 'status' | 'createdAt') {
-        if (by === 'status') {
-            this.notes.sort((a, b) => a.status.localeCompare(b.status));
-        } else if (by === 'createdAt') {
-            this.notes.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-        }
+        return this.notes.filter(note => note.status === NoteStatus.ACTIVE).length;
     }
 }
