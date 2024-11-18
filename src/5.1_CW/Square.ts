@@ -1,4 +1,4 @@
-export class Square extends Shape {
+export class Square extends Shape implements Printable{
     public side: number;
 
     constructor(color: string, name: string, side: number) {
