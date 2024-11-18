@@ -93,7 +93,7 @@ class TodoList implements ITodoList {
 
 class Note implements INote {
     readonly id: Uuid;
-    title: string;
+        title: string;
     text: string;
     readonly createdAt: Date;
     public updatedAt: Date | null;
